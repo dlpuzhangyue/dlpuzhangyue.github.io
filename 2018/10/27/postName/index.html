@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="视频,">
 
 
 
@@ -79,17 +79,18 @@
 
 
 
-<meta name="description" content="往事如观流水 / 来着如仰高山">
+<meta name="description" content="VideoJS使用文档VideoJs的使用VideoJs的使用和Flv.js类似  安装npm i video.js videojs-contrib-hls videojs-flash –save 引入 import videojs from ‘video.js’ import ‘videojs-contrib-hls’ 介绍请参照文档 import ‘videojs-flash’ videojs">
+<meta name="keywords" content="视频">
 <meta property="og:type" content="article">
-<meta property="og:title" content="postName">
+<meta property="og:title" content="VideoJS使用文档">
 <meta property="og:url" content="http://yoursite.com/2018/10/27/postName/index.html">
 <meta property="og:site_name" content="笔记">
-<meta property="og:description" content="往事如观流水 / 来着如仰高山">
+<meta property="og:description" content="VideoJS使用文档VideoJs的使用VideoJs的使用和Flv.js类似  安装npm i video.js videojs-contrib-hls videojs-flash –save 引入 import videojs from ‘video.js’ import ‘videojs-contrib-hls’ 介绍请参照文档 import ‘videojs-flash’ videojs">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-27T04:10:23.314Z">
+<meta property="og:updated_time" content="2018-10-27T05:54:36.411Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="postName">
-<meta name="twitter:description" content="往事如观流水 / 来着如仰高山">
+<meta name="twitter:title" content="VideoJS使用文档">
+<meta name="twitter:description" content="VideoJS使用文档VideoJs的使用VideoJs的使用和Flv.js类似  安装npm i video.js videojs-contrib-hls videojs-flash –save 引入 import videojs from ‘video.js’ import ‘videojs-contrib-hls’ 介绍请参照文档 import ‘videojs-flash’ videojs">
 
 
 
@@ -125,7 +126,7 @@
 
 
 
-  <title>postName | 笔记</title>
+  <title>VideoJS使用文档 | 笔记</title>
   
 
 
@@ -249,7 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">postName</h1>
+          <h1 class="post-title" itemprop="name headline">VideoJS使用文档</h1>
         
 
         <div class="post-meta">
@@ -299,7 +300,49 @@
       
 
       
-        
+        <h1 id="VideoJS使用文档"><a href="#VideoJS使用文档" class="headerlink" title="VideoJS使用文档"></a>VideoJS使用文档</h1><h2 id="VideoJs的使用"><a href="#VideoJs的使用" class="headerlink" title="VideoJs的使用"></a>VideoJs的使用</h2><p>VideoJs的使用和Flv.js类似</p>
+<ol>
+<li>安装<br>npm i video.js videojs-contrib-hls videojs-flash –save</li>
+<li>引入<ul>
+<li>import videojs from ‘video.js’</li>
+<li>import ‘videojs-contrib-hls’ <a href="https://www.npmjs.com/package/videojs-contrib-hls" target="_blank" rel="noopener">介绍请参照文档</a></li>
+<li>import ‘videojs-flash’ <a href="https://www.npmjs.com/package/videojs-flash" target="_blank" rel="noopener">videojs播放器的官方flash技术</a></li>
+<li>window.videojs = videojs</li>
+</ul>
+<ol start="3">
+<li>使用<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> // html</span><br><span class="line">&lt;video id=&quot;my_video&quot; ref=&quot;video&quot;  class=&quot;video-js video_style&quot; autoplay controls&gt;</span><br><span class="line">  &lt;source :src=&quot;liveUrl&quot; type=&quot;rtmp/flv&quot;&gt;</span><br><span class="line">&lt;/video&gt;</span><br><span class="line"></span><br><span class="line">// js 需写在mounted钩子中</span><br><span class="line">this.videoPlayer = videojs(this.$refs.video, &#123;</span><br><span class="line">  controls: true,</span><br><span class="line">  autoplay: true,</span><br><span class="line">  preload: &apos;auto&apos;,</span><br><span class="line">  techOrder: [&apos;flash&apos;, &apos;html5&apos;]</span><br><span class="line">&#125;)</span><br><span class="line">this.videoPlayer.src(url)</span><br><span class="line">this.videoPlayer.load() //加载</span><br><span class="line">this.videoPlayer.play() //播放</span><br><span class="line">this.videoPlayer.dispose() //释放</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="4">
+<li>注意事项</li>
+</ol>
+<ul>
+<li>播放器视窗大小如果小于300 * 400，则无法实现自动播放</li>
+<li>同上当播放器视窗大小如果小于300 * 400时会提示‘this.el_.vjs_getProperty is not a function’</li>
+<li>关于视频的type网上说法不统一, 有‘rtmp/mp4’，‘rtmp/hls’，‘rtmp/flv’亲测第三个为正确答案。</li>
+<li>在路由离开时，一定要将播放器释放，否则会占用大量浏览器资源</li>
+</ul>
+<hr>
+<h2 id="vue-video-player的使用"><a href="#vue-video-player的使用" class="headerlink" title="vue-video-player的使用"></a>vue-video-player的使用</h2><p>在vue项目中，有人将VideoJS以组件的形式进行封装，名为 ==vue-video-player==</p>
+<h3 id="配置代码"><a href="#配置代码" class="headerlink" title="配置代码"></a>配置代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">playerOptions: &#123;</span><br><span class="line">        autoplay: false, // 自动播放</span><br><span class="line">        controls: true, // 是否显示控制栏</span><br><span class="line">        techOrder: [&apos;flash&apos;, &apos;html5&apos;], // 兼容顺序</span><br><span class="line">        sourceOrder: true, // </span><br><span class="line">        flash: &#123; hls: &#123; withCredentials: false &#125; &#125;,</span><br><span class="line">        html5: &#123; hls: &#123; withCredentials: false &#125; &#125;,</span><br><span class="line">        sources: [&#123; // 流配置，数组形式，会根据兼容顺序自动切换</span><br><span class="line">          type: &apos;rtmp/mp4&apos;,</span><br><span class="line">          src: &apos;rtmp://184.72.239.149/vod/&amp;mp4:BigBuckBunny_115k.mov&apos;</span><br><span class="line">        &#125;, &#123;</span><br><span class="line">          withCredentials: false,</span><br><span class="line">          type: &apos;application/x-mpegURL&apos;,</span><br><span class="line">          src: &apos;http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8&apos;</span><br><span class="line">        &#125;],</span><br><span class="line">        poster: &quot;/static/img/no_data.png&quot;, // 播放器默认图片</span><br><span class="line">        controlBar: &#123; // 配置控制栏</span><br><span class="line">        timeDivider: false, // 时间分割线</span><br><span class="line">        durationDisplay: false, // 总时间</span><br><span class="line">        progressControl: true, // 进度条</span><br><span class="line">        customControlSpacer: true, // 未知</span><br><span class="line">        fullscreenToggle: true // 全屏</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>下面说说用这个插件来直播的一些坑和注意点吧：</p>
+<p>首先，常用的 demo 在 vue-video-player 中官方已经给出了，按要求来就可以，其中</p>
+<ol>
+<li>如果需要播放 HLS 流，需要安装 ==videojs-contrib-hls== 插件，非原生支持的浏览器，直播服务端需要开启 CORS（后面会讲到）</li>
+<li>如果需要播放 RTMP 流，需要安装 ==videojs-flash== 插件</li>
+<li>如果两个流都需要播放，flash 插件需要安装到 hls 插件之前</li>
+</ol>
+<blockquote>
+<p>坑：</p>
+<ol>
+<li>即使按照官方文档一步一步进行操作，发现还是无法正常播放rtmp视频，原因在于始终找不到==video-flash==<br><a href="https://github.com/surmon-china/vue-video-player/issues/183" target="_blank" rel="noopener">对应issues</a></li>
+<li>在直接使用官方文档给出的demo 时，会出现‘video.js is not undefined’的提示，网上给出解决方案，说将import 引入的方式换做require，但是并没有效果。<a href="https://github.com/surmon-china/vue-video-player/issues/185" target="_blank" rel="noopener">对应issues</a></li>
+</ol>
+</blockquote>
+
       
     </div>
     
@@ -321,6 +364,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/视频/" rel="tag"># 视频</a>
+          
+        </div>
       
 
       
@@ -391,8 +440,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -417,6 +475,15 @@
 
             
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
             
 
           </nav>
@@ -446,6 +513,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#VideoJS使用文档"><span class="nav-number">1.</span> <span class="nav-text">VideoJS使用文档</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#VideoJs的使用"><span class="nav-number">1.1.</span> <span class="nav-text">VideoJs的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vue-video-player的使用"><span class="nav-number">1.2.</span> <span class="nav-text">vue-video-player的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置代码"><span class="nav-number">1.2.1.</span> <span class="nav-text">配置代码</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
