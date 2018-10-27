@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="vue,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="如何使用Vue.mixin()偷懒">
+<meta name="keywords" content="vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue">
+<meta property="og:url" content="http://yoursite.com/2018/10/27/vueMixin/index.html">
+<meta property="og:site_name" content="笔记">
+<meta property="og:description" content="如何使用Vue.mixin()偷懒">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-10-27T11:27:57.995Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue">
+<meta name="twitter:description" content="如何使用Vue.mixin()偷懒">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/10/27/vueMixin/">
+
+
+
+
+
+  <title>Vue | 笔记</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归档">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/27/vueMixin/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhang_yue">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.jituwang.com/uploads/allimg/151003/258203-1510030RP894.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vue</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-27T19:18:16+08:00">
+                2018-10-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>如何使用Vue.mixin()偷懒<br><a id="more"></a></p>
+</blockquote>
+<h1 id="Vue-mixin"><a href="#Vue-mixin" class="headerlink" title="Vue.mixin()"></a>Vue.mixin()</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近开发的页面以及功能大都以表格为主，接口获取来的 ==JSON== 数据大都是需要经过处理，比如时间戳需要转换，或者状态码的转义。对于这样的问题，各大主流框架都提供了类似于过滤的方法，在 ==Vue== 中，一般是在页面上定义 ==filter== 然后在模板文件中使用 ==|== 进行处理。</p>
+<p>这种方法和以前的遍历数组洗数据是方便了许多，但是，当我发现在许多的页面都有相同的 ==filter== 的时候，每个页面都要复制一遍就显的很蛋疼，遂决定用 ==Vue.mixin()== 实现一次代码，无限复用。</p>
+<p>最后，还可以将所有的 ==filter== 包装成一个 ==vue== 的插件，使用的时候调用 ==Vue.use()== 即可，甚至可以上传 ==npm== 包，开发不同的项目的时候可以直接 ==install== 使用。（考虑到最近更新的比较快，遂打包上传这步骤先缓缓，等版本稍微稳定了之后来补全）</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>闲话说够，开始正题。</p>
+<h3 id="Vue-mixin为何物"><a href="#Vue-mixin为何物" class="headerlink" title="Vue.mixin为何物"></a>Vue.mixin为何物</h3><p>学习一个新的框架或者 ==API== 的时候，最好的途径就是上官网，这里附上 <a href="https://cn.vuejs.org/v2/guide/mixins.html#%E5%85%A8%E5%B1%80%E6%B7%B7%E5%85%A5" target="_blank" rel="noopener">Vue.mixin()</a> 官方说明。</p>
+<p>一句话解释，==Vue.mixin()== 可以把你创建的自定义方法混入所有的 ==Vue== 实例。</p>
+<p>示例代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Vue.mixin(&#123;</span><br><span class="line">  created: function()&#123;</span><br><span class="line">    console.log(&quot;success&quot;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>跑起你的项目，你会发现在控制台输出了一坨 ==success。==</p>
+<p>效果出来了意思也就出来了，所有的 ==Vue ==实例的 ==created== 方法都被改成了我们自定义的方法。</p>
+<h3 id="使用Vue-mixin"><a href="#使用Vue-mixin" class="headerlink" title="使用Vue.mixin()"></a>使用Vue.mixin()</h3><p>接下来的思路很简单，我们整合所有的 ==filter== 函数到一个文件，在== main.js ==中引入即可。</p>
+<p>在上代码之前打断一下，代码很简单，但是我们可以写的更加规范化，关于如何做到规范，在 Vue 的官网有比较详细的 <a href="https://cn.vuejs.org/v2/style-guide/#%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%E5%90%8D-%E5%BF%85%E8%A6%81" target="_blank" rel="noopener">风格指南</a> 可以参考。</p>
+<p>因为我们的自定义方法会在所有的实例中混入，如果按照以前的方法，难免会有覆盖原先的方法的危险，按照官方的建议，混入的自定义方法名增加前缀 ==$_== 用作区分。<br>创建一个 ==config.js== 文件，用于保存状态码对应的含义，将其暴露出去<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">export const typeConfig = &#123;</span><br><span class="line">  1: &quot;type one&quot;,</span><br><span class="line">  2: &quot;type two&quot;,</span><br><span class="line">  3: &quot;type three&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>再创建一个 ==filters.js== 文件，用于保存所有的自定义函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import &#123; typeConfig &#125; from &quot;./config&quot;</span><br><span class="line">export default &#123;</span><br><span class="line">  filters: &#123;</span><br><span class="line">    $_filterType: (value) =&gt; &#123;</span><br><span class="line">      return typeConfig[value] || &quot;type undefined&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后，在 ==main.js== 中引入我们的 ==filters== 方法集<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import filter from &quot;./filters&quot;</span><br><span class="line">Vue.mixin(filter)</span><br></pre></td></tr></table></figure></p>
+<p>接下来，我们就可以在== .vue== 的模板文件中随意使用自定义函数了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;&#123;&#123;typeStatus | $_filterType&#125;&#125;&lt;div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="包装插件"><a href="#包装插件" class="headerlink" title="包装插件"></a>包装插件</h2><p>接下来简单应用一下 ==Vue== 中插件的制作方法。创建插件之后，就可以 Vue.use(myPlugin) 来使用了。<br>首先附上插件的 官方文档。<br>一句话解释，包装的插件需要一个 ==install== 的方法将插件装载到 Vue 上。<br>关于 ==Vue.use(==) 的源码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">function initUse (Vue) &#123;</span><br><span class="line">  Vue.use = function (plugin) &#123;</span><br><span class="line">    var installedPlugins = (this._installedPlugins || (this._installedPlugins = []));</span><br><span class="line">    if (installedPlugins.indexOf(plugin) &gt; -1) &#123;</span><br><span class="line">      return this</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // additional parameters</span><br><span class="line">    var args = toArray(arguments, 1);</span><br><span class="line">    args.unshift(this);</span><br><span class="line">    if (typeof plugin.install === &apos;function&apos;) &#123;</span><br><span class="line">      plugin.install.apply(plugin, args);</span><br><span class="line">    &#125; else if (typeof plugin === &apos;function&apos;) &#123;</span><br><span class="line">      plugin.apply(null, args);</span><br><span class="line">    &#125;</span><br><span class="line">    installedPlugins.push(plugin);</span><br><span class="line">    return this</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>很直观的就看到他在最后调用了 ==plugin.install== 的方法，我们要做的就是处理好这个 ==install== 函数即可。<br>上代码<br>==config.js== 文件依旧需要，这里保存了所有状态码对应的转义文字<br>创建一个 ==myPlugin.js== 文件，这个就是我们编写的插件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import &#123; typeConfig &#125; from &quot;./config&quot;</span><br><span class="line"></span><br><span class="line">myPlugin.install = (Vue) =&gt; &#123;</span><br><span class="line">  Vue.mixin(&#123;</span><br><span class="line">    filters: &#123;</span><br><span class="line">      $_filterType: (value) =&gt; &#123;</span><br><span class="line">        return typeConfig[value] || &quot;type undefined&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line">export default myPlugin</span><br></pre></td></tr></table></figure></p>
+<p>插件的 install 函数的第一个参数为 Vue 的实例，后面还可以传入一些自定义参数。<br>在 main.js 文件中，我们不用 Vue.mixin() 转而使用 Vue.use() 来完成插件的装载。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import myPlugin from &quot;./myPlugin&quot;</span><br><span class="line">Vue.use(myPlugin)</span><br></pre></td></tr></table></figure></p>
+<p>至此，我们已经完成了一个小小的插件，并将我们的状态码转义过滤器放入了所有的 Vue 实例中，在 .vue 的模板文件中，我们可以使用<br>来进行状态码转义了.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持技术分享,感谢您的支持!</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="https://i.loli.net/2018/10/27/5bd409c8dedab.jpeg" alt="zhang_yue 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="https://i.loli.net/2018/10/27/5bd409e622667.jpeg" alt="zhang_yue 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue/" rel="tag"># vue</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/27/Mock/" rel="next" title="前端如何Mock数据">
+                <i class="fa fa-chevron-left"></i> 前端如何Mock数据
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="http://www.jituwang.com/uploads/allimg/151003/258203-1510030RP894.jpg" alt="zhang_yue">
+            
+              <p class="site-author-name" itemprop="name">zhang_yue</p>
+              <p class="site-description motion-element" itemprop="description">往事如观流水 / 来着如仰高山</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/dlpuzhangyue" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Vue-mixin"><span class="nav-number">1.</span> <span class="nav-text">Vue.mixin()</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">1.2.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Vue-mixin为何物"><span class="nav-number">1.2.1.</span> <span class="nav-text">Vue.mixin为何物</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Vue-mixin"><span class="nav-number">1.2.2.</span> <span class="nav-text">使用Vue.mixin()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包装插件"><span class="nav-number">1.3.</span> <span class="nav-text">包装插件</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhang_yue</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
